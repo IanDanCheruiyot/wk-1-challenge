@@ -1,23 +1,23 @@
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 function getBasicSalaryAndBenefits() {
-  rl.question('Enter Basic Salary: ', (firstValue) => {
-    rl.question('Enter Total Benefits: ', (secondValue) => {      
-      const grossSalary = calculateGrossSalary(firstValue, secondValue);
-      console.log(Gross Salary: ${grossSalary});
-      const netSalary = calculateNetSalary(grossSalary);
-      console.log(Net Salary: ${netSalary});
-      console.log(Payee: ${deductPayeeKRA(grossSalary) * grossSalary});
-      console.log(NHIF: ${deductNHIF(grossSalary)});
-      console.log(NSSF: ${deductNSSF(grossSalary)});    
-      rl.close();
-    });
-  });
+  const basicSalary = 50000;
+  const totalBenefits = 10000;
+
+  const grossSalary = calculateGrossSalary(basicSalary, totalBenefits);
+  console.log(`Gross Salary: ${grossSalary}`);
+  
+  const netSalary = calculateNetSalary(grossSalary);
+  console.log(`Net Salary: ${netSalary}`);
+  
+  const payee = deductPayeeKRA(grossSalary) * grossSalary;
+  console.log(`Payee: ${payee}`);
+  
+  const nhif = deductNHIF(grossSalary);
+  console.log(`NHIF: ${nhif}`);
+  
+  const nssf = deductNSSF(grossSalary);
+  console.log(`NSSF: ${nssf}`);
 }
-getBasicSalaryAndBenefits();
+
 function deductPayeeKRA(grossSalary) {
   let taxRate;
   if (grossSalary <= 24000) {
@@ -33,6 +33,7 @@ function deductPayeeKRA(grossSalary) {
   }
   return taxRate;
 }
+
 function deductNHIF(grossSalary) {
   let deduct;
   if (grossSalary <= 5999) {
@@ -72,12 +73,15 @@ function deductNHIF(grossSalary) {
   }
   return deduct;
 }
+
 function deductNSSF(grossSalary) {
   return 0.06 * grossSalary;
 }
+
 function calculateGrossSalary(basicSalary, benefits) {
   return Number(basicSalary) + Number(benefits);
 }
+
 function calculateNetSalary(grossSalary) {
   const payee = deductPayeeKRA(grossSalary) * grossSalary;
   const nhif = deductNHIF(grossSalary);
@@ -85,3 +89,5 @@ function calculateNetSalary(grossSalary) {
 
   return grossSalary - payee - nhif - nssf;
 }
+
+getBasicSalaryAndBenefits();
